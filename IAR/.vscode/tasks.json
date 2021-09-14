@@ -1,0 +1,53 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "iar: Iar Build",
+			"type": "iar",
+			"command": "build",
+			"project": "${command:iar-settings.project-file}",
+			"config": "${command:iar-settings.project-configuration}",
+			"builder": "${command:iar-settings.workbench}/common/bin/IarBuild.exe",
+			"problemMatcher": [
+				"$iar-cc",
+				"$iar-linker"
+			],
+			"group": "build"
+		},
+		{
+			"label": "fffff",
+			"type": "shell",
+			"command": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3\\stm8\\bin\\ielftool.exe",
+			"args": [
+				"--ihex",
+				"--verbose",
+				"\"${workspaceFolder}/Debug/Exe/Uart.out\"",
+				"\"${cwd}/Debug/Exe/Uart.hex\""
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build",
+			"type": "shell",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"iar: Iar Build",
+				"fffff"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Download",
+			"type": "shell",
+			"command": [
+				"'C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3\\common\\bin\\cspybat.exe'",
+				"-f '${workspaceFolder}\\settings\\Uart.Debug.general.xcl'",
+				"--debug_file='${workspaceFolder}/Debug/Exe/Uart.hex'",
+				"--download_only",
+				"--backend",
+				"-f '${workspaceFolder}\\settings\\Uart.Debug.driver.xcl'"
+			],			
+			"group": "build",
+		}
+	]
+}
